@@ -17,5 +17,12 @@ def predict_api():
     output = model.predict(new_data)
     return jsonify(float(output[0]))
 
+@app.route('/predict', methods = ['POST'])
+def predict():
+    data = [float(x) for x in request.form.values()]
+    final_data = np.array(np.array(data).reshape(1, -1))
+    output = model.predict(final_data)
+    return render_template('home.html', prediction = 'The price is $ {:.2f}'.format(output[0] * 10000))
+
 if __name__ == "__main__":
     app.run(debug = True)
